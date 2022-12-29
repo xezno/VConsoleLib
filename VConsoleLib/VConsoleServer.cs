@@ -12,6 +12,8 @@ public class VConsoleServer
 
 	public Action<string> OnCommand;
 
+	public bool Connected;
+
 	public VConsoleServer()
 	{
 		tcpListener = new TcpListener( IPAddress.Loopback, 29100 );
@@ -30,7 +32,7 @@ public class VConsoleServer
 
 		// Header
 		sendBuffer.AddRange( encodedIdentifier );
-		sendBuffer.AddRange( new byte[] { 0x00, 0xd3 } ); // Protocol
+		sendBuffer.AddRange( new byte[] { 0x00, 0xd4 } ); // Protocol
 		sendBuffer.AddRange( BitConverter.GetBytes( data.Length + 12 ).Reverse() ); // Length
 		sendBuffer.Add( 0x00 ); // Padding
 
@@ -44,7 +46,10 @@ public class VConsoleServer
 
 	public void Log( string str, uint color = 0xFFFFFFFF )
 	{
-		var prntPacket = new Prnt( "General", str, color );
+		if ( !Connected )
+			return;
+
+		var prntPacket = new Prnt( "Managed", str + "\n", color );
 		EncodeAndSend( "PRNT", prntPacket );
 	}
 
@@ -52,6 +57,8 @@ public class VConsoleServer
 	{
 		while ( true )
 		{
+			Connected = false;
+
 			byte[] buf = new byte[128];
 
 			tcpClient = tcpListener.AcceptTcpClient();
@@ -67,9 +74,11 @@ public class VConsoleServer
 
 			// Send channels
 			var chanPacket = new Chan( new[] {
-				new Chan.ChanEntry("General"),
+				new Chan.ChanEntry("Managed")
 			} );
 			EncodeAndSend( "CHAN", chanPacket );
+
+			Connected = true;
 
 			// Notify vconsole
 			Log( "Connected to VConsole using VConsoleLib." );
