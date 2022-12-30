@@ -64,10 +64,6 @@ public class VConsoleServer
 			tcpClient = tcpListener.AcceptTcpClient();
 			stream = tcpClient.GetStream();
 
-			// Create pipe
-			var ppcrPacket = new Ppcr();
-			EncodeAndSend( "PPCR", ppcrPacket );
-
 			// Send addon info
 			var ainfPacket = new AInf( "My Game", "C:\\MyGame.exe" );
 			EncodeAndSend( "AINF", ainfPacket );
