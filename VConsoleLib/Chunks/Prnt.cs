@@ -16,18 +16,10 @@ internal struct Prnt
 	[MarshalAs( UnmanagedType.ByValTStr, SizeConst = 128 )]
 	public string String = "";
 
-	uint SwapEndianness( uint x )
-	{
-		return ((x & 0x000000ff) << 24) +  // First byte
-			   ((x & 0x0000ff00) << 8) +   // Second byte
-			   ((x & 0x00ff0000) >> 8) +   // Third byte
-			   ((x & 0xff000000) >> 24);   // Fourth byte
-	}
-
 	public Prnt( string channel, string str, uint color = 0xFE71DCFF )
 	{
 		this.Channel = Chan.ChanEntry.CalcChannelID( channel );
 		this.String = str;
-		this.Color = SwapEndianness( color );
+		this.Color = Utils.SwapEndianness( color );
 	}
 }

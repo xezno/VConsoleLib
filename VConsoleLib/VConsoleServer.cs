@@ -35,8 +35,7 @@ public class VConsoleServer
 		sendBuffer.AddRange( new byte[] { 0x00, 0xd4 } ); // Protocol
 		sendBuffer.AddRange( BitConverter.GetBytes( data.Length + 12 ).Reverse() ); // Length
 		sendBuffer.Add( 0x00 ); // Padding
-
-		sendBuffer.Add( (identifier == "PPCR") ? (byte)0x01 : (byte)0x00 ); // Don't know
+		sendBuffer.Add( 0x00 ); // Padding
 
 		// Body
 		sendBuffer.AddRange( data ); // data

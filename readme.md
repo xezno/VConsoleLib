@@ -4,7 +4,7 @@
 
 Create a server
 ```cs
-vconsoleServer = new();
+var vconsoleServer = new VConsoleServer();
 ```
 
 Log to the server
