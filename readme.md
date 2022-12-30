@@ -1,5 +1,8 @@
 # VConsoleLib
 
+Connects to `vconsole2.exe` from Source 2 tools.
+Targets current dota 2 release (protocol `0xD4`).
+
 ## Usage
 
 Create a server
