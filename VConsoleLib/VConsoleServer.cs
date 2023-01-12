@@ -20,6 +20,7 @@ public class VConsoleServer
 		tcpListener.Start();
 
 		var thread = new Thread( ListenThread );
+		thread.Name = "VConsole Server Thread";
 		thread.Start();
 	}
 
